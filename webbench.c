@@ -26,29 +26,30 @@
 
 /* values */
 volatile int timerexpired=0; //根据命令行参数-t指定的测试时间判断是否超时
-int speed=0;
-int failed=0;
-int bytes=0;
+int speed=0; //成功得到服务器相应的子进程总数
+int failed=0; //子进程请求失败总数
+int bytes=0;  //读取到的字节数
 /* globals */
-int http10=1; /* 0 - http/0.9, 1 - http/1.0, 2 - http/1.1 */
+int http10=1; /* 0 - http/0.9, 1 - http/1.0, 2 - http/1.1 */  //http版本定义
 /* Allow: GET, HEAD, OPTIONS, TRACE */
 #define METHOD_GET 0
 #define METHOD_HEAD 1
 #define METHOD_OPTIONS 2
 #define METHOD_TRACE 3
 #define PROGRAM_VERSION "1.5"
-int method=METHOD_GET;
-int clients=1;
-int force=0;
-int force_reload=0;
-int proxyport=80;
-char *proxyhost=NULL;
-int benchtime=30;
+int method=METHOD_GET;  //定义HTTP请求方法GET 此外还支持OPTIONS、HEAD、TRACE方法，在main函数中用switch判断
+int clients=1;  //默认并发数为1，也就是子进程个数 可以由命令行参数-c指定
+int force=0;   //是否等待从服务器获取数去数据 0为获取
+int force_reload=0; //是否使用cache  0为使用
+int proxyport=80;  //代理服务器端口 80
+char *proxyhost=NULL;  //代理服务器IP  默认为NULL
+int benchtime=30;  //测试时间  默认为30秒 可由命令行参数-t指定
+
 /* internal */
-int mypipe[2];
-char host[MAXHOSTNAMELEN];
+int mypipe[2];  //创建管道（半双工）父子进程通信，读取/写入数据
+char host[MAXHOSTNAMELEN]; //定义服务器主机名
 #define REQUEST_SIZE 2048
-char request[REQUEST_SIZE];
+char request[REQUEST_SIZE];  //http请求信息
 
 static const struct option long_options[]=
 {
