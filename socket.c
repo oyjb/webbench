@@ -65,7 +65,7 @@ int Socket(const char *host, int clientPort)
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0)
         return sock;
-	创建的sock如果没有绑定一个地址，则系统自动为其绑定一个地址，然后去连接host对应的服务器
+	//创建的sock如果没有绑定一个地址，则系统自动为其绑定一个地址，然后去连接host对应的服务器
     if (connect(sock, (struct sockaddr *)&ad, sizeof(ad)) < 0)
         return -1;
 	//一旦成功建立连接，sock就唯一标识了这个链接，客户端就可以通过读写这个sock来与服务端通信
